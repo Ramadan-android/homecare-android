@@ -1,6 +1,7 @@
 package com.ramadan.homecare.core.util
 
 enum class AssetCategory {
+    All,
     REFRIGERATOR,
     WASHING_MACHINE,
     TV,
@@ -10,6 +11,7 @@ enum class AssetCategory {
 }
 
 enum class MaintenanceType {
+    All,
     ROUTINE,
     REPAIR,
     INSPECTION,
