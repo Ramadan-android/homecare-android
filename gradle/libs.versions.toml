@@ -11,6 +11,8 @@ composeBom = "2026.02.01"
 room3 = "3.0.1"
 ksp = "2.2.10-2.0.2"
 hilt = "2.60.1"
+hiltNavigation = "1.4.0"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -31,6 +33,9 @@ androidx-room3-runtime = { module = "androidx.room3:room3-runtime", version.ref 
 androidx-room3-compiler = { module = "androidx.room3:room3-compiler", version.ref = "room3" }
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
+hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigation"}
+androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
