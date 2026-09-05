@@ -8,7 +8,7 @@ import java.time.LocalDate
 
 @Entity(tableName = Constants.ASSETS_TABLE)
 data class AssetEntity(
-    @PrimaryKey(autoGenerate = true) val assetId: Long,
+    @PrimaryKey(autoGenerate = true) val assetId: Long = 0,
     val assetName: String,
     val category: AssetCategory,
     val brand: String,

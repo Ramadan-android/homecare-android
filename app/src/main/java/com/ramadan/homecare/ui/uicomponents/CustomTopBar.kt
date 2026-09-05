@@ -1,6 +1,7 @@
 package com.ramadan.homecare.ui.uicomponents
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,14 +22,17 @@ import androidx.compose.ui.unit.sp
 fun TopBar(
     modifier: Modifier = Modifier,
     leadingIcon: ImageVector? = null,
+    onLeadingIconClicked: (() -> Unit)? = null,
     trailingIcon: (@Composable () -> Unit)? = null,
-    title: String = ""
+    title: String = "",
+    titleColor: Color = Color(0xff004F52),
+    containerColor: Color = Color(0xffF3F4F5)
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .height(64.dp)
-            .background(Color(0xffF3F4F5)),
+            .background(containerColor),
         verticalAlignment = Alignment.CenterVertically
     ) {
         leadingIcon?.let {
@@ -42,6 +46,9 @@ fun TopBar(
                     start = 16.dp,
                     end = 8.dp
                 )
+                    .clickable(enabled = onLeadingIconClicked != null){
+                        onLeadingIconClicked?.invoke()
+                    }
             )
         }
 
@@ -54,7 +61,7 @@ fun TopBar(
                 )
                 .weight(1f),
             style = MaterialTheme.typography.titleLarge.copy(
-                color = Color(0xff004F52),
+                color = titleColor,
                 fontWeight = FontWeight.Bold,
                 fontSize = 24.sp
             )

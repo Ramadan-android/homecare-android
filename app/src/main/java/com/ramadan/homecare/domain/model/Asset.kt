@@ -4,7 +4,7 @@ import com.ramadan.homecare.core.util.AssetCategory
 import java.time.LocalDate
 
 data class Asset(
-    val assetId: Long,
+    val assetId: Long = 0,
     val assetName: String,
     val category: AssetCategory,
     val brand: String,

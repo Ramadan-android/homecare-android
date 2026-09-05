@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.ramadan.homecare.ui.features.assets.addasset.AddAssetScreen
 import com.ramadan.homecare.ui.features.assets.myassets.MyAssetsScreen
 import com.ramadan.homecare.ui.theme.HomeCareTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,7 +24,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             HomeCareTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    MyAssetsScreen()
+                    AddAssetScreen()
                 }
             }
         }

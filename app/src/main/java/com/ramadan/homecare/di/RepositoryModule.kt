@@ -1,5 +1,7 @@
 package com.ramadan.homecare.di
 
+import com.ramadan.homecare.domain.storage.FileStorage
+import com.ramadan.homecare.data.local.FileStorageImpl
 import com.ramadan.homecare.data.repository.AssetRepositoryImpl
 import com.ramadan.homecare.data.repository.AttachmentRepositoryImpl
 import com.ramadan.homecare.data.repository.MaintenanceRecordRepositoryImpl
@@ -33,4 +35,11 @@ abstract class RepositoryModule {
     abstract fun bindAttachmentRepository(
         attachmentRepositoryImpl: AttachmentRepositoryImpl
     ): AttachmentRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindFileStorage(
+        fileStorageImpl: FileStorageImpl
+    ): FileStorage
+
 }
