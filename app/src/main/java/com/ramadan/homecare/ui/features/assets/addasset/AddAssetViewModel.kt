@@ -1,12 +1,17 @@
 package com.ramadan.homecare.ui.features.assets.addasset
 
+import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.ramadan.homecare.core.util.AssetCategory
 import com.ramadan.homecare.domain.model.Asset
-import com.ramadan.homecare.domain.usecase.AddAssetResult
-import com.ramadan.homecare.domain.usecase.AddAssetUseCase
-import com.ramadan.homecare.domain.usecase.AddAssetValidationError
+import com.ramadan.homecare.domain.usecase.addasset.AddAssetResult
+import com.ramadan.homecare.domain.usecase.addasset.AddAssetUseCase
+import com.ramadan.homecare.domain.usecase.addasset.AddAssetValidationError
+import com.ramadan.homecare.domain.usecase.assetdetails.GetAssetDetailsUseCase
+import com.ramadan.homecare.route.AddEditAssetRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +23,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddAssetViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val addAssetUseCase: AddAssetUseCase,
+    private val getAssetDetailsUseCase: GetAssetDetailsUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AddAssetUiState())
@@ -26,6 +33,38 @@ class AddAssetViewModel @Inject constructor(
     private val _event = MutableSharedFlow<AddAssetUiEffectEvent>()
     val event = _event.asSharedFlow()
 
+    init {
+        val assetId = savedStateHandle.toRoute<AddEditAssetRoute>().assetId
+        assetId?.let {
+            loadAssetData(it)
+        }
+    }
+
+    private fun loadAssetData(assetId: Long){
+        viewModelScope.launch {
+            val asset = getAssetDetailsUseCase(assetId)
+            asset?.let {oldAsset ->
+                _state.update {
+                    it.copy(
+                        assetEditId = oldAsset.assetId,
+                        assetName = oldAsset.assetName,
+                        category = oldAsset.category,
+                        brand = oldAsset.brand,
+                        model = oldAsset.model,
+                        serialNumber = oldAsset.serialNumber ?:"",
+                        purchaseDate = oldAsset.purchaseDate,
+                        hasWarranty = oldAsset.hasWarranty,
+                        warrantyExpires = oldAsset.warrantyExpires,
+                        trackMaintenance = oldAsset.trackMaintenance,
+                        intervalMonths = oldAsset.intervalMonths,
+                        notes = oldAsset.notes ?:"",
+                        assetPhoto = oldAsset.assetPhoto,
+                        screenMode = ScreenMode.Edit,
+                    )
+                }
+            }
+        }
+    }
     fun onEvent(event: AddAssetUiEvent) {
 
         when (event) {
@@ -176,6 +215,7 @@ class AddAssetViewModel @Inject constructor(
 
                 viewModelScope.launch {
                     val asset = Asset(
+                        assetId = currentState.assetEditId ?: 0L,
                         assetName = currentState.assetName,
                         category = currentState.category,
                         brand = currentState.brand,

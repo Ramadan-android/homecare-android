@@ -22,4 +22,7 @@ interface MaintenanceRecordDao {
 
     @Query("DELETE FROM ${Constants.MAINTENANCE_RECORDS_TABLE} WHERE id = :maintenanceId")
     suspend fun deleteMaintenanceById(maintenanceId: Long)
+
+    @Query("DELETE FROM ${Constants.MAINTENANCE_RECORDS_TABLE} WHERE assetId = :assetId")
+    suspend fun deleteMaintenanceByAssetId(assetId: Long)
 }

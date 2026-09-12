@@ -31,4 +31,8 @@ class MaintenanceRecordRepositoryImpl @Inject constructor(
         maintenanceRecordDao.deleteMaintenanceById(maintenanceId)
     }
 
+    override suspend fun deleteMaintenanceByAssetId(assetId: Long) {
+        maintenanceRecordDao.deleteMaintenanceByAssetId(assetId)
+    }
+
 }

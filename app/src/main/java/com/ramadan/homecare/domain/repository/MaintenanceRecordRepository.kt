@@ -12,4 +12,7 @@ interface MaintenanceRecordRepository {
     suspend fun getMaintenanceRecordById(maintenanceId: Long): MaintenanceRecord?
 
     suspend fun deleteMaintenanceById(maintenanceId: Long)
+
+    suspend fun deleteMaintenanceByAssetId(assetId: Long)
+
 }

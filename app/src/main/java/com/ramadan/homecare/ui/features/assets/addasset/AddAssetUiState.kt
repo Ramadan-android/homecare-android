@@ -4,6 +4,7 @@ import com.ramadan.homecare.core.util.AssetCategory
 import java.time.LocalDate
 
 data class AddAssetUiState(
+    val assetEditId: Long? = null,
     val assetName: String = "",
     val category: AssetCategory = AssetCategory.All,
     val brand: String = "",
@@ -15,6 +16,7 @@ data class AddAssetUiState(
     val trackMaintenance: Boolean = false,
     val intervalMonths: Int? = null,
     val notes: String = "",
+    val screenMode: ScreenMode = ScreenMode.Add,
     val errorMessage: String? = null,
     val assetCategoryError: String? = null,
     val assetNameError: String? = null,
@@ -29,3 +31,8 @@ data class AddAssetUiState(
     val isVisibleCategoryMenu: Boolean = false,
     val isVisibleMonthsMenu: Boolean = false
 )
+
+enum class ScreenMode{
+    Add,
+    Edit
+}

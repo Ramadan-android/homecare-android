@@ -10,7 +10,8 @@ fun AttachmentEntity.toAttachment(): Attachment =
         maintenanceId = this.maintenanceId,
         fileReference = this.fileReference,
         fileName = this.fileName,
-        mimeType = this.mimeType
+        mimeType = this.mimeType,
+        fileSize = this.fileSize
     )
 
 fun Attachment.toEntity(): AttachmentEntity =
@@ -20,5 +21,6 @@ fun Attachment.toEntity(): AttachmentEntity =
         maintenanceId = this.maintenanceId,
         fileReference = this.fileReference,
         fileName = this.fileName,
-        mimeType = this.mimeType
+        mimeType = this.mimeType,
+        fileSize = this.fileSize
     )

@@ -1,12 +1,12 @@
 package com.ramadan.homecare.ui.features.assets.addasset
 
+import android.annotation.SuppressLint
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,8 +21,6 @@ import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.outlined.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -33,6 +31,7 @@ import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -51,6 +50,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil3.compose.AsyncImage
 import com.ramadan.homecare.R
 import com.ramadan.homecare.core.util.AssetCategory
+import com.ramadan.homecare.ui.uicomponents.CardWrapperItem
 import com.ramadan.homecare.ui.uicomponents.CustomTextFormField
 import com.ramadan.homecare.ui.uicomponents.DatePickerDialog
 import com.ramadan.homecare.ui.uicomponents.RowSwitcher
@@ -61,12 +61,22 @@ import java.time.ZoneId
 
 @Composable
 fun AddAssetScreen(
-    viewModel: AddAssetViewModel = hiltViewModel()
+    viewModel: AddAssetViewModel = hiltViewModel(),
+    navigateToMyAssets: () -> Unit,
+    navigateBack: () -> Unit
 ){
     val state by viewModel.state.collectAsState()
+    LaunchedEffect(Unit) {
+        viewModel.event.collect { event ->
+            when (event) {
+                AddAssetUiEffectEvent.NavigateBack -> navigateBack()
+                AddAssetUiEffectEvent.NavigateToMyAssets -> navigateToMyAssets()
+            }
+        }
+    }
     Scaffold(
         topBar = { TopBar(
-            title = "Add Asset",
+            title = "${state.screenMode.name} Asset",
             leadingIcon = Icons.Default.ArrowBack,
             onLeadingIconClicked = viewModel::navigateBack,
             containerColor = Color(0xffF8F9FA)
@@ -77,7 +87,8 @@ fun AddAssetScreen(
             modifier = Modifier.padding(paddingValues),
             state = state,
             onEvent = viewModel::onEvent,
-            navigateToMyAssets = viewModel::navigateToMyAssets
+            navigateToMyAssets = viewModel::navigateToMyAssets,
+            navigateBack = viewModel::navigateBack
             )
 
     }
@@ -90,11 +101,13 @@ private fun AddAssetContent(
     modifier: Modifier = Modifier,
     state: AddAssetUiState,
     onEvent: (AddAssetUiEvent) -> Unit,
-    navigateToMyAssets: () -> Unit
+    navigateToMyAssets: () -> Unit,
+    navigateBack: () -> Unit
 ){
     val datePickerState = rememberDatePickerState(
         initialSelectedDateMillis = System.currentTimeMillis(),
         selectableDates = object : SelectableDates {
+            @SuppressLint("SuspiciousIndentation")
             override fun isSelectableDate(utcTimeMillis: Long): Boolean {
                 val selectedDate = Instant
                     .ofEpochMilli(utcTimeMillis)
@@ -129,7 +142,7 @@ private fun AddAssetContent(
             .padding(horizontal = 16.dp)
     ) {
         item {
-            CardWrapperAddItem(
+            CardWrapperItem(
                 cardPadding = PaddingValues(top = 8.dp, bottom = 12.dp)
             ) {
                 Text(
@@ -168,7 +181,6 @@ private fun AddAssetContent(
                         readOnly = true,
                         placeholder = "Select a category",
                         trillingIcon = Icons.Default.ArrowDropDown,
-//                        onClickTrillingIcon = { onEvent(AddAssetUiEvent.CategoryMenuIconClicked(!state.isVisibleCategoryMenu)) },
                         errorMassage = state.assetCategoryError
                     )
                     ExposedDropdownMenu(
@@ -244,7 +256,7 @@ private fun AddAssetContent(
                     )
                 }
             }
-            CardWrapperAddItem {
+            CardWrapperItem {
                 RowSwitcher(
                     icon = ImageVector.vectorResource(id = R.drawable.warranty_icon),
                     text = "Warranty",
@@ -279,7 +291,7 @@ private fun AddAssetContent(
                     )
                 }
             }
-            CardWrapperAddItem {
+            CardWrapperItem {
                 RowSwitcher(
                     icon = ImageVector.vectorResource(id = R.drawable.track_maintenance_icon),
                     text = "Track Maintenance",
@@ -340,7 +352,7 @@ private fun AddAssetContent(
 
 
             }
-            CardWrapperAddItem {
+            CardWrapperItem {
                 CustomTextFormField(
                     fieldTitle = "Notes",
                     titleFontSize = 22.sp,
@@ -382,7 +394,7 @@ private fun AddAssetContent(
             ) {
                 Text(
                     text = "Cancel",
-                    modifier = Modifier.clickable(onClick = navigateToMyAssets),
+                    modifier = Modifier.clickable(onClick = navigateBack),
                     style = TextStyle(
                         fontSize = 14.sp,
                         fontWeight = FontWeight.W400,
@@ -419,31 +431,7 @@ private fun AddAssetContent(
 
 
 
-@Composable
-private fun CardWrapperAddItem(
-    modifier: Modifier = Modifier,
-    cardPadding: PaddingValues = PaddingValues(vertical = 12.dp),
-    content: @Composable () -> Unit
-){
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(cardPadding),
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White
-        ),
 
-    ) {
-        Column(
-            modifier = modifier
-                .padding(20.dp)
-
-        ) {
-            content()
-        }
-    }
-}
 @Composable
 @Preview
 private fun AddAssetPreview(){
@@ -498,7 +486,8 @@ private fun AddAssetPreview(){
             modifier = Modifier.padding(paddingValues),
             state = AddAssetUiState(),
             onEvent = {},
-            navigateToMyAssets = {}
+            navigateToMyAssets = {},
+            navigateBack = {}
             )
 
     }}

@@ -10,19 +10,28 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.CheckCircle
+import androidx.compose.material.icons.outlined.DateRange
+import androidx.compose.material.icons.outlined.ErrorOutline
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.ramadan.homecare.R
 import com.ramadan.homecare.core.util.AssetCategory
 import com.ramadan.homecare.domain.model.Asset
@@ -33,6 +42,7 @@ fun AssetCard(
     modifier: Modifier = Modifier,
     asset: Asset
 ) {
+
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -52,13 +62,16 @@ fun AssetCard(
                 .padding(16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Icon(
-                painter = painterResource(R.drawable.asset_painter_preview),
+            AsyncImage(
+                model = asset.assetPhoto,
                 contentDescription = "asset icon",
                 modifier = Modifier
-                    .size(64.dp)
+                    .clip(RoundedCornerShape(12.dp))
+                    .size(64.dp),
+                placeholder = painterResource(R.drawable.asset_painter_preview),
+                contentScale = ContentScale.Crop
             )
-            Column{
+            Column {
                 Text(
                     text = asset.assetName,
                     modifier = Modifier
@@ -68,23 +81,66 @@ fun AssetCard(
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Medium,
 
-                    )
+                        )
 
                 )
                 Text(
                     text = asset.category.name,
                     modifier = Modifier
-                        .padding(bottom = 4.dp),
+                        .padding(bottom = 6.dp),
                     color = Color(0xff191C1D),
                     style = TextStyle(
                         fontSize = 14.sp,
                         fontWeight = FontWeight.W400,
 
-                    )
+                        )
+
+                )
+                RowIconText(
+                    icon = Icons.Outlined.CheckCircle,
+                    text = "Warranty Active",
+                    iconAndTextColor = Color(0xff004F52)
+
+                )
+                RowIconText(
+                    icon = Icons.Outlined.DateRange,
+                    text = "Warranty Active",
+                    iconAndTextColor = Color(0xff3E4949)
 
                 )
             }
         }
+    }
+}
+
+@Composable
+fun RowIconText(
+    modifier: Modifier = Modifier,
+    icon: ImageVector,
+    text: String,
+    iconAndTextColor: Color,
+) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(2.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = "$text icon",
+            modifier = Modifier
+                .size(14.dp),
+            tint = iconAndTextColor
+        )
+        Text(
+            text = text,
+            color = iconAndTextColor,
+            style = TextStyle(
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Medium,
+            )
+        )
     }
 }
 

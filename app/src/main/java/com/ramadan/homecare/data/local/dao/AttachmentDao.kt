@@ -12,6 +12,12 @@ interface AttachmentDao {
     @Insert
     suspend fun insertAttachment(attachment: AttachmentEntity)
 
+    @Query("""
+    SELECT * FROM ${Constants.ATTACHMENTS_TABLE}
+    WHERE assetId = :assetId
+""")
+    suspend fun getAllAssetAttachments(assetId: Long): List<AttachmentEntity>
+
     @Query(
         """
     SELECT * FROM ${Constants.ATTACHMENTS_TABLE}
@@ -29,8 +35,11 @@ interface AttachmentDao {
     WHERE assetId = :assetId
     AND maintenanceId IS NULL
 """)
-    suspend fun getAssetAttachments(assetId: Long): List<AttachmentEntity>
+    suspend fun getAssetLevelAttachments(assetId: Long): List<AttachmentEntity>
 
     @Query("DELETE FROM ${Constants.ATTACHMENTS_TABLE} WHERE id = :attachmentId")
     suspend fun deleteAttachmentById(attachmentId: Long)
+
+    @Query("DELETE FROM ${Constants.ATTACHMENTS_TABLE} WHERE assetId = :assetId")
+    suspend fun deleteAttachmentsByAssetId(assetId: Long)
 }

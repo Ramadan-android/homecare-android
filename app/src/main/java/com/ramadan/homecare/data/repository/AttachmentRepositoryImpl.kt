@@ -14,6 +14,10 @@ class AttachmentRepositoryImpl @Inject constructor(
         attachmentDao.insertAttachment(attachment.toEntity())
     }
 
+    override suspend fun getAllAssetAttachments(assetId: Long): List<Attachment> {
+        return attachmentDao.getAllAssetAttachments(assetId).map { it.toAttachment() }
+    }
+
     override suspend fun getAttachmentsByAssetIdAndMaintenanceId(
         assetId: Long,
         maintenanceId: Long
@@ -24,12 +28,16 @@ class AttachmentRepositoryImpl @Inject constructor(
         ).map { it.toAttachment() }
     }
 
-    override suspend fun getAssetAttachments(assetId: Long): List<Attachment> {
-        return attachmentDao.getAssetAttachments(assetId).map { it.toAttachment() }
+    override suspend fun getAssetLevelAttachments(assetId: Long): List<Attachment> {
+        return attachmentDao.getAssetLevelAttachments(assetId).map { it.toAttachment() }
     }
 
     override suspend fun deleteAttachmentById(attachmentId: Long) {
         attachmentDao.deleteAttachmentById(attachmentId)
+    }
+
+    override suspend fun deleteAttachmentsByAssetId(assetId: Long) {
+        attachmentDao.deleteAttachmentsByAssetId(assetId)
     }
 
 }

@@ -2,10 +2,17 @@ package com.ramadan.homecare.ui.uicomponents
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -15,6 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -25,6 +34,7 @@ fun TopBar(
     onLeadingIconClicked: (() -> Unit)? = null,
     trailingIcon: (@Composable () -> Unit)? = null,
     title: String = "",
+    textAlignCenter: Boolean = false,
     titleColor: Color = Color(0xff004F52),
     containerColor: Color = Color(0xffF3F4F5)
 ) {
@@ -64,10 +74,40 @@ fun TopBar(
                 color = titleColor,
                 fontWeight = FontWeight.Bold,
                 fontSize = 24.sp
-            )
+            ),
+            textAlign = if(textAlignCenter) TextAlign.Center else TextAlign.Start
         )
         trailingIcon?.let {
             it()
         }
+    }
+}
+
+@Preview
+@Composable
+private fun TopBarPreview(){
+    Column(
+        modifier = Modifier.fillMaxSize()
+            .background(Color.White)
+    ) {
+        TopBar(
+            leadingIcon = Icons.Default.ArrowBack,
+            title = "Asset Details",
+            textAlignCenter = true,
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Outlined.Edit,
+                    contentDescription = "edit asset icon",
+                    tint = Color(0xff3E4949),
+                    modifier = Modifier
+                        .padding(
+                            end = 23.dp
+                        )
+
+                )
+
+            }
+        )
+
     }
 }

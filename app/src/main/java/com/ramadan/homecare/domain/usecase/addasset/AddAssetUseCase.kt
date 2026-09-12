@@ -1,4 +1,4 @@
-package com.ramadan.homecare.domain.usecase
+package com.ramadan.homecare.domain.usecase.addasset
 
 import com.ramadan.homecare.domain.storage.FileStorage
 import com.ramadan.homecare.domain.model.Asset

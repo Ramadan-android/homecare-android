@@ -26,6 +26,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -48,8 +49,18 @@ import java.time.LocalDate
 @Composable
 fun MyAssetsScreen(
     viewModel: MyAssetsViewModel = hiltViewModel(),
+    navigateToAssetDetails: (Long) -> Unit,
+    navigateToAddAsset: () -> Unit
 ) {
     val state by viewModel.state.collectAsState()
+    LaunchedEffect(Unit) {
+        viewModel.event.collect {event ->
+            when (event){
+                MyAssetsUiEffectEvent.NavigateToAddAsset -> navigateToAddAsset()
+                is MyAssetsUiEffectEvent.NavigateToAssetDetails -> navigateToAssetDetails(event.assetId)
+            }
+        }
+    }
     Scaffold(
         topBar = {
             TopBar(
@@ -220,7 +231,7 @@ private fun MyAssetsContent(
         ) {
             AssetCard(
                 asset = it,
-                modifier = Modifier.clickable{
+                modifier = Modifier.clickable(indication = null,interactionSource = null){
                     onNavigateToAssetDetails(it.assetId)
                 }
             )

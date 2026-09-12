@@ -3,7 +3,7 @@ package com.ramadan.homecare.ui.features.assets.myassets
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ramadan.homecare.core.util.AssetCategory
-import com.ramadan.homecare.domain.usecase.GetAssetsUseCase
+import com.ramadan.homecare.domain.usecase.myasset.GetAssetsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -6,5 +6,6 @@ data class Attachment(
     val maintenanceId: Long?,
     val fileReference: String,
     val fileName: String,
-    val mimeType: String
+    val mimeType: String,
+    val fileSize: Long
 )
