@@ -12,8 +12,8 @@ import javax.inject.Inject
 class MaintenanceRecordRepositoryImpl @Inject constructor(
     private val maintenanceRecordDao: MaintenanceRecordDao
 ): MaintenanceRecordRepository {
-    override suspend fun insertMaintenance(maintenance: MaintenanceRecord) {
-        maintenanceRecordDao.insertMaintenance(maintenance.toEntity())
+    override suspend fun insertMaintenance(maintenance: MaintenanceRecord): Long {
+        return maintenanceRecordDao.insertMaintenance(maintenance.toEntity())
     }
 
     override fun getMaintenanceRecordsByAssetId(assetId: Long): Flow<List<MaintenanceRecord>> {

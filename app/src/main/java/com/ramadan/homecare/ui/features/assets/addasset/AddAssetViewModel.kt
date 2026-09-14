@@ -1,16 +1,15 @@
 package com.ramadan.homecare.ui.features.assets.addasset
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.ramadan.homecare.core.util.AssetCategory
 import com.ramadan.homecare.domain.model.Asset
-import com.ramadan.homecare.domain.usecase.addasset.AddAssetResult
-import com.ramadan.homecare.domain.usecase.addasset.AddAssetUseCase
-import com.ramadan.homecare.domain.usecase.addasset.AddAssetValidationError
-import com.ramadan.homecare.domain.usecase.assetdetails.GetAssetDetailsUseCase
+import com.ramadan.homecare.domain.usecase.asset.AddAssetResult
+import com.ramadan.homecare.domain.usecase.asset.AddAssetUseCase
+import com.ramadan.homecare.domain.usecase.asset.AddAssetValidationError
+import com.ramadan.homecare.domain.usecase.asset.GetAssetDetailsUseCase
 import com.ramadan.homecare.route.AddEditAssetRoute
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow

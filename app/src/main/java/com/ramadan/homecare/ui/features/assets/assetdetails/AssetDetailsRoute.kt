@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.ramadan.homecare.route.AssetDetailsRoute
 import com.ramadan.homecare.ui.features.assets.addasset.toEditAssetScreen
+import com.ramadan.homecare.ui.features.maintenance.addmaintenance.toAddMaintenanceScreen
 
 fun NavGraphBuilder.assetDetailsRoute(
     navController: NavController
@@ -18,7 +19,7 @@ fun NavGraphBuilder.assetDetailsRoute(
                 navController.toEditAssetScreen(it)
             },
             navigateToAddMaintenanceScreen = {
-
+                navController.toAddMaintenanceScreen(it)
             }
         )
     }

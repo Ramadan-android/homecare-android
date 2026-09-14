@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
@@ -39,13 +41,16 @@ fun CustomTextFormField(
     readOnly: Boolean = false,
     placeholder: String,
     trillingIcon: ImageVector? = null,
+    leadingIcon: ImageVector? = null,
     onClickTrillingIcon: (() -> Unit)? = null,
+    onClickleadingIcon: (() -> Unit)? = null,
     singleLine: Boolean = true,
     maxLines: Int = 1,
     bottomPadding: Dp = 16.dp,
-    errorMassage: String? = null
+    errorMassage: String? = null,
+    keyboardType: KeyboardType = KeyboardType.Text
 
-    ) {
+) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -64,6 +69,9 @@ fun CustomTextFormField(
         TextField(
             value = value,
             onValueChange = onValueChange,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = keyboardType
+            ),
             readOnly = readOnly,
             modifier = Modifier
                 .fillMaxWidth()
@@ -101,6 +109,24 @@ fun CustomTextFormField(
                     color = Color(0xffBEC9C9),
 
                     )
+            },
+            leadingIcon = leadingIcon?.let {
+                {
+                    Icon(
+                        imageVector = it,
+                        contentDescription = "${leadingIcon.name} icon",
+                        tint = Color(0xff3E4949),
+                        modifier = Modifier
+                            .padding(start = 16.dp)
+                            .size(18.dp, 24.dp)
+                            .clickable(
+                                enabled = onClickleadingIcon != null
+                            ) {
+                                onClickleadingIcon?.invoke()
+                            }
+
+                    )
+                }
             },
             trailingIcon = trillingIcon?.let {
                 {
@@ -152,21 +178,17 @@ private fun CustomTextFormFieldPreview() {
 
     ) {
         CustomTextFormField(
-            bottomPadding = 0.dp,
             fieldTitle = "fieldTitle",
             value = "value",
             onValueChange = {},
             placeholder = "placeholder",
-            trillingIcon = null,
-            onClickTrillingIcon = null
+            bottomPadding = 0.dp,
         )
         CustomTextFormField(
             fieldTitle = "fieldTitle",
             value = "value",
             onValueChange = {},
             placeholder = "placeholder",
-            trillingIcon = null,
-            onClickTrillingIcon = null
         )
 
     }

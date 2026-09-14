@@ -1,4 +1,4 @@
-package com.ramadan.homecare.domain.usecase.assetdetails
+package com.ramadan.homecare.domain.usecase.asset
 
 import com.ramadan.homecare.domain.model.Asset
 import com.ramadan.homecare.domain.repository.AssetRepository

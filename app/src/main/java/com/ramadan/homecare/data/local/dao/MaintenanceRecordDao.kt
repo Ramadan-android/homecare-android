@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 interface MaintenanceRecordDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertMaintenance(maintenance: MaintenanceRecordEntity)
+    suspend fun insertMaintenance(maintenance: MaintenanceRecordEntity): Long
 
     @Query("SELECT * FROM ${Constants.MAINTENANCE_RECORDS_TABLE} WHERE assetId = :assetId")
     fun getMaintenanceRecordsByAssetId(assetId: Long): Flow<List<MaintenanceRecordEntity>>

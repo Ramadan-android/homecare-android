@@ -1,17 +1,21 @@
 package com.ramadan.homecare.ui.uicomponents
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -19,10 +23,12 @@ import androidx.compose.ui.unit.dp
 fun CardWrapperItem(
     modifier: Modifier = Modifier,
     cardPadding: PaddingValues = PaddingValues(vertical = 12.dp),
-    contentPadding: Dp = 20.dp,
-    verticalArrangement:  Arrangement.Vertical = Arrangement.Top,
+    contentPadding: PaddingValues = PaddingValues(20.dp),
+    verticalArrangement: Arrangement.Vertical = Arrangement.Top,
     hasBorder: Boolean = false,
     containerColor: Color = Color.White,
+    shape: Dp = 12.dp,
+    elevation: CardElevation = CardDefaults.cardElevation(),
     content: @Composable () -> Unit
 ){
     val borderWidth = if (hasBorder)1.dp else 0.dp
@@ -33,9 +39,10 @@ fun CardWrapperItem(
             .border(
                 width = borderWidth,
                 color = Color(0xffE1E3E4),
-                shape = RoundedCornerShape(12.dp)
+                shape = RoundedCornerShape(shape)
             ),
-        shape = RoundedCornerShape(12.dp),
+        elevation = elevation,
+        shape = RoundedCornerShape(shape),
         colors = CardDefaults.cardColors(
             containerColor = containerColor
         ),
@@ -50,4 +57,23 @@ fun CardWrapperItem(
             content()
         }
     }
+}
+@Preview
+@Composable
+private fun CardWrapperItemPreview(){
+    Column(
+        modifier = Modifier.fillMaxSize()
+            .background(Color.White)
+    ) {
+        CardWrapperItem(
+            modifier = Modifier.fillMaxWidth(),
+            cardPadding = PaddingValues(0.dp),
+            contentPadding = PaddingValues(16.dp),
+            shape = 0.dp,
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 10.dp
+            )
+        ) { }
+    }
+
 }

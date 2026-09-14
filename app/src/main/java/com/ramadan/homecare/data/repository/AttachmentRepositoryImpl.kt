@@ -5,6 +5,8 @@ import com.ramadan.homecare.data.repository.mappers.toAttachment
 import com.ramadan.homecare.data.repository.mappers.toEntity
 import com.ramadan.homecare.domain.model.Attachment
 import com.ramadan.homecare.domain.repository.AttachmentRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class AttachmentRepositoryImpl @Inject constructor(
@@ -14,8 +16,10 @@ class AttachmentRepositoryImpl @Inject constructor(
         attachmentDao.insertAttachment(attachment.toEntity())
     }
 
-    override suspend fun getAllAssetAttachments(assetId: Long): List<Attachment> {
-        return attachmentDao.getAllAssetAttachments(assetId).map { it.toAttachment() }
+    override fun getAllAssetAttachments(assetId: Long): Flow<List<Attachment>> {
+        return attachmentDao.getAllAssetAttachments(assetId).map {attachmentEntities ->
+            attachmentEntities.map { it.toAttachment() }
+        }
     }
 
     override suspend fun getAttachmentsByAssetIdAndMaintenanceId(

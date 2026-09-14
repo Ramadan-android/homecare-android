@@ -1,4 +1,4 @@
-package com.ramadan.homecare.domain.usecase.addasset
+package com.ramadan.homecare.domain.usecase.asset
 
 import com.ramadan.homecare.domain.storage.FileStorage
 import com.ramadan.homecare.domain.model.Asset
@@ -33,7 +33,7 @@ class AddAssetUseCase @Inject constructor(
 
         val validAsset = if (asset.assetPhoto != null) {
             asset.copy(
-                assetPhoto = fileStorage.saveImage(asset.assetPhoto)
+                assetPhoto = fileStorage.saveFile(asset.assetPhoto).fileReference
             )
         }else asset
 

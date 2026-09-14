@@ -5,6 +5,7 @@ import androidx.room3.Insert
 import androidx.room3.Query
 import com.ramadan.homecare.core.util.Constants
 import com.ramadan.homecare.data.local.entity.AttachmentEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AttachmentDao {
@@ -16,7 +17,7 @@ interface AttachmentDao {
     SELECT * FROM ${Constants.ATTACHMENTS_TABLE}
     WHERE assetId = :assetId
 """)
-    suspend fun getAllAssetAttachments(assetId: Long): List<AttachmentEntity>
+    fun getAllAssetAttachments(assetId: Long): Flow<List<AttachmentEntity>>
 
     @Query(
         """

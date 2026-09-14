@@ -4,7 +4,7 @@ import com.ramadan.homecare.core.util.MaintenanceType
 import java.time.LocalDate
 
 data class MaintenanceRecord(
-    val id: Long,
+    val id: Long = 0L,
     val assetId: Long,
     val maintenanceType: MaintenanceType,
     val date: LocalDate,

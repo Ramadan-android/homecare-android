@@ -64,7 +64,7 @@ fun AddAssetScreen(
     viewModel: AddAssetViewModel = hiltViewModel(),
     navigateToMyAssets: () -> Unit,
     navigateBack: () -> Unit
-){
+) {
     val state by viewModel.state.collectAsState()
     LaunchedEffect(Unit) {
         viewModel.event.collect { event ->
@@ -75,21 +75,23 @@ fun AddAssetScreen(
         }
     }
     Scaffold(
-        topBar = { TopBar(
-            title = "${state.screenMode.name} Asset",
-            leadingIcon = Icons.Default.ArrowBack,
-            onLeadingIconClicked = viewModel::navigateBack,
-            containerColor = Color(0xffF8F9FA)
-        )  },
+        topBar = {
+            TopBar(
+                title = "${state.screenMode.name} Asset",
+                leadingIcon = Icons.Default.ArrowBack,
+                onLeadingIconClicked = viewModel::navigateBack,
+                containerColor = Color(0xffF8F9FA)
+            )
+        },
         containerColor = Color(0xffF8F9FA)
-    ) {paddingValues ->
+    ) { paddingValues ->
         AddAssetContent(
             modifier = Modifier.padding(paddingValues),
             state = state,
             onEvent = viewModel::onEvent,
             navigateToMyAssets = viewModel::navigateToMyAssets,
             navigateBack = viewModel::navigateBack
-            )
+        )
 
     }
 }
@@ -103,7 +105,7 @@ private fun AddAssetContent(
     onEvent: (AddAssetUiEvent) -> Unit,
     navigateToMyAssets: () -> Unit,
     navigateBack: () -> Unit
-){
+) {
     val datePickerState = rememberDatePickerState(
         initialSelectedDateMillis = System.currentTimeMillis(),
         selectableDates = object : SelectableDates {
@@ -113,7 +115,7 @@ private fun AddAssetContent(
                     .ofEpochMilli(utcTimeMillis)
                     .atZone(ZoneId.systemDefault())
                     .toLocalDate()
-                    return !selectedDate.isAfter(LocalDate.now())
+                return !selectedDate.isAfter(LocalDate.now())
             }
         }
     )
@@ -129,7 +131,7 @@ private fun AddAssetContent(
             }
         }
     )
-    val photoPickerLauncher = rememberLauncherForActivityResult (
+    val photoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia()
     ) { uri ->
         uri?.let {
@@ -157,15 +159,16 @@ private fun AddAssetContent(
                 CustomTextFormField(
                     fieldTitle = "Asset Name",
                     value = state.assetName,
-                    onValueChange = {onEvent(AddAssetUiEvent.AssetNameChanged(it))},
+                    onValueChange = { onEvent(AddAssetUiEvent.AssetNameChanged(it)) },
                     placeholder = "e.g., HVAC System",
-                    errorMassage = state.assetNameError
+                    errorMassage = state.assetNameError,
 
-                )
+                    )
                 ExposedDropdownMenuBox(
                     expanded = state.isVisibleCategoryMenu,
                     onExpandedChange = {
-                        onEvent(AddAssetUiEvent.CategoryMenuIconClicked(it)) },
+                        onEvent(AddAssetUiEvent.CategoryMenuIconClicked(it))
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 16.dp)
@@ -174,19 +177,20 @@ private fun AddAssetContent(
                         modifier = Modifier.menuAnchor(
                             type = ExposedDropdownMenuAnchorType.PrimaryNotEditable
                         ),
-                        bottomPadding = 0.dp,
                         fieldTitle = "Category",
-                        value = if(state.category == AssetCategory.All) "Select Category" else state.category.name,
+                        value = if (state.category == AssetCategory.All) "Select Category" else state.category.name,
                         onValueChange = {},
                         readOnly = true,
                         placeholder = "Select a category",
                         trillingIcon = Icons.Default.ArrowDropDown,
-                        errorMassage = state.assetCategoryError
+                        bottomPadding = 0.dp,
+                        errorMassage = state.assetCategoryError,
                     )
                     ExposedDropdownMenu(
                         expanded = state.isVisibleCategoryMenu,
                         onDismissRequest = {
-                            onEvent(AddAssetUiEvent.CategoryMenuIconClicked(false)) }
+                            onEvent(AddAssetUiEvent.CategoryMenuIconClicked(false))
+                        }
                     ) {
                         AssetCategory.entries.forEach { category ->
                             if (category == AssetCategory.All) return@forEach
@@ -194,7 +198,8 @@ private fun AddAssetContent(
                                 text = { Text(category.name) },
                                 onClick = {
                                     onEvent(AddAssetUiEvent.AssetCategoryChanged(category))
-                                    onEvent(AddAssetUiEvent.CategoryMenuIconClicked(false))                                 }
+                                    onEvent(AddAssetUiEvent.CategoryMenuIconClicked(false))
+                                }
                             )
                         }
 
@@ -209,37 +214,37 @@ private fun AddAssetContent(
                         modifier = Modifier.weight(1f),
                         fieldTitle = "Brand",
                         value = state.brand,
-                        onValueChange = {onEvent(AddAssetUiEvent.BrandChanged(it))},
+                        onValueChange = { onEvent(AddAssetUiEvent.BrandChanged(it)) },
                         placeholder = "e.g., Carrier",
-                        errorMassage = state.brandError
+                        errorMassage = state.brandError,
 
-                    )
+                        )
                     CustomTextFormField(
                         modifier = Modifier.weight(1f),
                         fieldTitle = "Model",
                         value = state.model,
-                        onValueChange = {onEvent(AddAssetUiEvent.ModelChanged(it))},
+                        onValueChange = { onEvent(AddAssetUiEvent.ModelChanged(it)) },
                         placeholder = "Model No.",
-                        errorMassage = state.modelError
+                        errorMassage = state.modelError,
 
-                    )
+                        )
                 }
                 CustomTextFormField(
                     fieldTitle = "Serial Number",
                     value = state.serialNumber,
-                    onValueChange = {onEvent(AddAssetUiEvent.SerialNumberChanged(it))},
-                    placeholder = "Serial No."
+                    onValueChange = { onEvent(AddAssetUiEvent.SerialNumberChanged(it)) },
+                    placeholder = "Serial No.",
 
-                )
+                    )
                 CustomTextFormField(
-                    bottomPadding = 0.dp,
                     fieldTitle = "Purchase Date",
                     value = state.purchaseDate?.toString() ?: "mm/dd/yyyy",
-                    readOnly = true,
                     onValueChange = {},
+                    readOnly = true,
                     placeholder = "mm/dd/yyyy",
                     trillingIcon = Icons.Outlined.DateRange,
-                    onClickTrillingIcon = { onEvent(AddAssetUiEvent.DatePickerIconClicked) }
+                    onClickTrillingIcon = { onEvent(AddAssetUiEvent.DatePickerIconClicked) },
+                    bottomPadding = 0.dp,
                 )
                 if (state.isVisibleDatePicker) {
                     DatePickerDialog(
@@ -265,24 +270,25 @@ private fun AddAssetContent(
                 )
                 if (state.hasWarranty)
                     CustomTextFormField(
-                        bottomPadding = 0.dp,
                         modifier = Modifier.padding(top = 16.dp),
                         fieldTitle = "Warranty Expires",
                         value = state.warrantyExpires?.toString() ?: "mm/dd/yyyy",
-                        readOnly = true,
                         onValueChange = {},
+                        readOnly = true,
                         placeholder = "mm/dd/yyyy",
                         trillingIcon = Icons.Outlined.DateRange,
                         onClickTrillingIcon = { onEvent(AddAssetUiEvent.WarrantyDatePickerIconClicked) },
-                        errorMassage = state.warrantyExpiresError
+                        bottomPadding = 0.dp,
+                        errorMassage = state.warrantyExpiresError,
                     )
                 if (state.isVisibleWarrantyDatePicker) {
                     DatePickerDialog(
                         onClickDismiss = { onEvent(AddAssetUiEvent.WarrantyDatePickerIconClicked) },
                         onClickSet = {
-                            val date = Instant.ofEpochMilli(warrantyDatePickerState.selectedDateMillis!!)
-                                .atZone(ZoneId.systemDefault())
-                                .toLocalDate()
+                            val date =
+                                Instant.ofEpochMilli(warrantyDatePickerState.selectedDateMillis!!)
+                                    .atZone(ZoneId.systemDefault())
+                                    .toLocalDate()
 
                             onEvent(AddAssetUiEvent.PickDate(DateType.WARRANTY_EXPIRES, date))
                             onEvent(AddAssetUiEvent.WarrantyDatePickerIconClicked)
@@ -298,11 +304,12 @@ private fun AddAssetContent(
                     isChecked = state.trackMaintenance,
                     onClick = { onEvent(AddAssetUiEvent.TrackMaintenanceChanged) }
                 )
-                if (state.trackMaintenance){
+                if (state.trackMaintenance) {
                     ExposedDropdownMenuBox(
                         expanded = state.isVisibleMonthsMenu,
                         onExpandedChange = {
-                            onEvent(AddAssetUiEvent.MonthsMenuIconClicked(it)) },
+                            onEvent(AddAssetUiEvent.MonthsMenuIconClicked(it))
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 16.dp)
@@ -311,27 +318,29 @@ private fun AddAssetContent(
                             modifier = Modifier.menuAnchor(
                                 type = ExposedDropdownMenuAnchorType.PrimaryNotEditable
                             ),
-                            bottomPadding = 0.dp,
                             fieldTitle = "Interval (Months)",
-                            value = if(state.intervalMonths == null) "Select Interval" else "${state.intervalMonths} Months",
+                            value = if (state.intervalMonths == null) "Select Interval" else "${state.intervalMonths} Months",
                             onValueChange = {},
                             readOnly = true,
                             placeholder = "Select interval",
                             trillingIcon = Icons.Default.ArrowDropDown,
                             onClickTrillingIcon = { onEvent(AddAssetUiEvent.MonthsMenuIconClicked(!state.isVisibleMonthsMenu)) },
-                            errorMassage = state.intervalMonthsError
+                            bottomPadding = 0.dp,
+                            errorMassage = state.intervalMonthsError,
                         )
                         ExposedDropdownMenu(
                             expanded = state.isVisibleMonthsMenu,
                             onDismissRequest = {
-                                onEvent(AddAssetUiEvent.MonthsMenuIconClicked(false)) }
+                                onEvent(AddAssetUiEvent.MonthsMenuIconClicked(false))
+                            }
                         ) {
                             listOf(1, 3, 6, 12).forEach { month ->
                                 DropdownMenuItem(
                                     text = { Text("$month Months") },
                                     onClick = {
                                         onEvent(AddAssetUiEvent.IntervalMonthsChanged(month))
-                                        onEvent(AddAssetUiEvent.MonthsMenuIconClicked(false))                                 }
+                                        onEvent(AddAssetUiEvent.MonthsMenuIconClicked(false))
+                                    }
                                 )
                             }
 
@@ -350,7 +359,6 @@ private fun AddAssetContent(
                 }
 
 
-
             }
             CardWrapperItem {
                 CustomTextFormField(
@@ -358,14 +366,14 @@ private fun AddAssetContent(
                     titleFontSize = 22.sp,
                     titleColor = Color(0xff004F52),
                     value = state.notes,
-                    onValueChange = {onEvent(AddAssetUiEvent.NotesChanged(it))},
+                    onValueChange = { onEvent(AddAssetUiEvent.NotesChanged(it)) },
                     placeholder = "Add any additional details, contractor \n" +
                             "information, or quirks about this asset...\n\n",
                     singleLine = false,
-                    maxLines = 5
-                    )
+                    maxLines = 5,
+                )
             }
-            AsyncImage (
+            AsyncImage(
                 model = state.assetPhoto ?: R.drawable.add_photo_image,
                 contentDescription = "upload photo",
                 modifier = Modifier
@@ -373,7 +381,7 @@ private fun AddAssetContent(
                     .padding(top = 12.dp, bottom = 34.dp)
                     .size(358.dp, 172.dp)
                     .clip(RoundedCornerShape(12.dp))
-                    .clickable{
+                    .clickable {
 
                         photoPickerLauncher.launch(
                             PickVisualMediaRequest(
@@ -381,12 +389,13 @@ private fun AddAssetContent(
                             )
                         )
 
-                              },
+                    },
                 contentScale = ContentScale.Crop
             )
 
             Row(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .background(Color.White)
                     .padding(top = 40.dp, bottom = 16.dp, start = 16.dp, end = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -410,18 +419,18 @@ private fun AddAssetContent(
                     )
 
                 ) {
-                    if (state.isLoading){
+                    if (state.isLoading) {
                         CircularProgressIndicator()
-                    }else
-                    Text(
-                        text = "Save Asset",
-                        style = TextStyle(
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.W400,
-                            color = Color.White
-                        )
+                    } else
+                        Text(
+                            text = "Save Asset",
+                            style = TextStyle(
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.W400,
+                                color = Color.White
+                            )
 
-                    )
+                        )
                 }
             }
         }
@@ -430,21 +439,22 @@ private fun AddAssetContent(
 }
 
 
-
-
 @Composable
 @Preview
-private fun AddAssetPreview(){
+private fun AddAssetPreview() {
     Scaffold(
-        topBar = { TopBar(
-            title = "Add Asset",
-            leadingIcon = Icons.Default.ArrowBack,
-            titleColor = Color(0xff191C1D),
-            containerColor = Color(0xffF8F9FA)
-        )  },
+        topBar = {
+            TopBar(
+                title = "Add Asset",
+                leadingIcon = Icons.Default.ArrowBack,
+                titleColor = Color(0xff191C1D),
+                containerColor = Color(0xffF8F9FA)
+            )
+        },
         bottomBar = {
             Row(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .background(Color.White)
                     .padding(top = 40.dp, bottom = 16.dp, start = 16.dp, end = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
@@ -457,9 +467,9 @@ private fun AddAssetPreview(){
                         fontWeight = FontWeight.W400,
                         color = Color(0xff004F52)
                     )
-                    )
+                )
                 Button(
-                    onClick = {  },
+                    onClick = { },
                     modifier = Modifier.padding(start = 12.dp),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xff004F52)
@@ -481,13 +491,14 @@ private fun AddAssetPreview(){
 
         containerColor = Color(0xffF8F9FA)
 
-    ) {paddingValues ->
+    ) { paddingValues ->
         AddAssetContent(
             modifier = Modifier.padding(paddingValues),
             state = AddAssetUiState(),
             onEvent = {},
             navigateToMyAssets = {},
             navigateBack = {}
-            )
+        )
 
-    }}
+    }
+}

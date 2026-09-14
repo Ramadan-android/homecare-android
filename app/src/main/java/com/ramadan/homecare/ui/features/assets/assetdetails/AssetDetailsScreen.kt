@@ -5,7 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,8 +20,6 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Category
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -35,14 +35,14 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
@@ -59,12 +59,17 @@ fun AssetDetailsScreen(
     navigateToAddMaintenanceScreen: (assetId: Long) -> Unit,
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
     LaunchedEffect(Unit) {
         viewModel.event.collect { event ->
             when (event) {
-                is AssetDetailsEffectEvents.AddMaintenanceRecord -> navigateToAddMaintenanceScreen(event.assetId)
+                is AssetDetailsEffectEvents.AddMaintenanceRecord -> navigateToAddMaintenanceScreen(
+                    event.assetId
+                )
+
                 AssetDetailsEffectEvents.NavigateBack -> navigateBack()
                 is AssetDetailsEffectEvents.NavigateToEditAsset -> navigateToEditScreen(event.assetId)
+//                is AssetDetailsEffectEvents.OpenAttachment -> TODO()
             }
         }
     }
@@ -129,9 +134,13 @@ fun AssetDetailsScreen(
             modifier = Modifier.padding(innerPadding),
             state = state,
             onEvent = { viewModel.onEvent(it) },
-            onClickDelete = viewModel::showDeleteDialogDismiss
+            onClickDelete = viewModel::showDeleteDialogDismiss,
+            openAttachment = {fileReference, mimeType ->
+
+                viewModel.openAttachment(context, fileReference, mimeType) }
+
         )
-        if (state.showDeleteDialog){
+        if (state.showDeleteDialog) {
             AppAlertDialog(
                 title = "Delete ${state.assetName} Asset?",
                 message = "Are you sure you want to delete this asset? This action cannot be undone.",
@@ -154,13 +163,14 @@ private fun AssetDetailsContent(
     state: AssetDetailsUiState,
     onEvent: (AssetDetailsEvents) -> Unit,
     onClickDelete: () -> Unit,
+    openAttachment: (String, String) -> Unit,
 
     ) {
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0xffE1E3E4))
-            .padding(start = 16.dp, end = 16.dp, top = 24.dp)
+            .background(Color(0xffE1E3E4)),
+        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 24.dp)
     ) {
         item {
             Column(
@@ -195,7 +205,7 @@ private fun AssetDetailsContent(
                     color = Color(0xff3E4949)
                 )
                 CardWrapperItem(
-                    contentPadding = 16.dp,
+                    contentPadding = PaddingValues(16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                     hasBorder = true
                 ) {
@@ -229,7 +239,7 @@ private fun AssetDetailsContent(
                 }
                 ListTile(
                     painter = painterResource(R.drawable.warranty_status_image),
-                    title = if (state.warrantyExpires != null)"Warranty Active" else "Warranty Expired",
+                    title = if (state.warrantyExpires != null) "Warranty Active" else "Warranty Expired",
                     value = state.warrantyExpires.toString(),
                     containerColor = Color(0xffF3F4F5)
 
@@ -243,7 +253,7 @@ private fun AssetDetailsContent(
 
                     )
                 }
-                if (state.maintenanceHistory.isNotEmpty()){
+                if (state.maintenanceHistory.isNotEmpty()) {
                     Text(
                         text = "History",
                         style = TextStyle(
@@ -268,7 +278,7 @@ private fun AssetDetailsContent(
 
                     }
                 }
-                if (state.attachments.isNotEmpty()){
+                if (state.attachments.isNotEmpty()) {
                     Text(
                         text = "Attachments",
                         style = TextStyle(
@@ -280,24 +290,67 @@ private fun AssetDetailsContent(
                             .fillMaxWidth()
                             .padding(vertical = 16.dp)
                     )
-                    state.attachments.forEach { attachment ->
 
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(16.dp)
-                        ) {
-                            ListTile(
-                                painter = painterResource(R.drawable.warranty_status_image),
-                                title = attachment.fileName,
-                                value = attachment.fileSize.toString(),
-                                containerColor = Color.White,
-                                hasBorder = true
-                            )
+//                    LazyVerticalGrid (
+//                        columns = GridCells.Fixed(2),
+//                        modifier = Modifier.fillMaxWidth()
+//                            .height(180.dp),
+//                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+//                    ) {
+//                        items(
+//                            state.attachments.size
+//
+//                        ) {
+//                            ListTile(
+//                                painter = painterResource(R.drawable.warranty_status_image),
+//                                modifier = Modifier.fillMaxWidth().weight(1f),
+//                                iconSize = DpSize(48.dp, 48.dp),
+//                                contentPadding = PaddingValues(8.dp),
+//                                title = state.attachments[it].fileName,
+//                                value = state.attachments[it].fileSize.toString(),
+//                                containerColor = Color.White,
+//                                hasBorder = true
+//                            )
+//                        }
+//
+//                    }
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        state.attachments.chunked(2).forEach { rowItems ->
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                rowItems.forEach { attachment ->
+                                    ListTile(
+                                        painter = painterResource(R.drawable.warranty_status_image),
+                                        modifier = Modifier
+                                            .weight(1f)
+                                            .clickable(onClick = { openAttachment(attachment.fileReference, attachment.mimeType) }),
+                                        iconSize = DpSize(48.dp, 48.dp),
+                                        contentPadding = PaddingValues(8.dp),
+                                        title = attachment.fileName,
+                                        value = attachment.fileSize.toString(),
+                                        containerColor = Color.White,
+                                        hasBorder = true
+                                    )
+                                }
+
+                                if (rowItems.size == 1) {
+                                    Spacer(
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                }
+                            }
                         }
-
-
                     }
+
+
+
                 }
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -331,7 +384,6 @@ private fun AssetDetailsContent(
 }
 
 
-
 @Composable
 fun ListTile(
     modifier: Modifier = Modifier,
@@ -339,16 +391,19 @@ fun ListTile(
     title: String,
     value: String,
     trailingText: String? = null,
-    contentPadding: Dp = 16.dp,
+    contentPadding: PaddingValues = PaddingValues(16.dp),
     containerColor: Color = Color(0xffF3F4F5),
-    hasBorder: Boolean = false
+    hasBorder: Boolean = false,
+    iconSize: DpSize = DpSize(32.dp, 36.dp)
+
 ) {
     CardWrapperItem(
         modifier = modifier.fillMaxWidth(),
         contentPadding = contentPadding,
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        cardPadding = PaddingValues(vertical = 6.dp),
+        verticalArrangement = Arrangement.spacedBy(40.dp),
         containerColor = containerColor,
-        hasBorder = hasBorder
+        hasBorder = hasBorder,
 
     ) {
         Row(
@@ -359,7 +414,7 @@ fun ListTile(
             Image(
                 painter = painter,
                 contentDescription = "",
-                modifier = Modifier.size(32.dp, 36.dp)
+                modifier = Modifier.size(iconSize)
 
             )
             Column(
@@ -473,8 +528,9 @@ private fun AssetDetailsPreview() {
             modifier = Modifier.padding(innerPadding),
             state = AssetDetailsUiState(),
             onEvent = {},
+            openAttachment = { _, _ -> },
             onClickDelete = {}
 
-        )
+            )
     }
 }
