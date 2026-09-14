@@ -1,6 +1,10 @@
 package com.ramadan.homecare.di
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room3.Room
 import com.ramadan.homecare.core.util.Constants
 import com.ramadan.homecare.data.local.dao.AssetDao
@@ -41,5 +45,14 @@ abstract class AppModule {
         @Singleton
         fun provideAttachmentDao(db: HomeCareDatabase): AttachmentDao = db.attachmentDao()
 
+        @Provides
+        @Singleton
+        fun providePreferencesDataStore(@ApplicationContext context: Context): DataStore<Preferences> {
+            return PreferenceDataStoreFactory.create(
+                produceFile = {
+                    context.preferencesDataStoreFile(Constants.DATA_STORE_NAME)
+                }
+            )
+        }
     }
 }

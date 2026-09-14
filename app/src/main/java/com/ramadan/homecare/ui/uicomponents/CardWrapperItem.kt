@@ -16,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -27,7 +26,7 @@ fun CardWrapperItem(
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
     hasBorder: Boolean = false,
     containerColor: Color = Color.White,
-    shape: Dp = 12.dp,
+    shape: RoundedCornerShape = RoundedCornerShape(12.dp),
     elevation: CardElevation = CardDefaults.cardElevation(),
     content: @Composable () -> Unit
 ){
@@ -39,10 +38,10 @@ fun CardWrapperItem(
             .border(
                 width = borderWidth,
                 color = Color(0xffE1E3E4),
-                shape = RoundedCornerShape(shape)
+                shape = shape
             ),
         elevation = elevation,
-        shape = RoundedCornerShape(shape),
+        shape = shape,
         colors = CardDefaults.cardColors(
             containerColor = containerColor
         ),
@@ -69,7 +68,7 @@ private fun CardWrapperItemPreview(){
             modifier = Modifier.fillMaxWidth(),
             cardPadding = PaddingValues(0.dp),
             contentPadding = PaddingValues(16.dp),
-            shape = 0.dp,
+            shape = RoundedCornerShape(0),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 10.dp
             )

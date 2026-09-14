@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.ramadan.homecare.route.HomeCareNavGraph
 import com.ramadan.homecare.route.MyAssetRoute
+import com.ramadan.homecare.route.SettingsRoute
 import com.ramadan.homecare.ui.features.assets.addasset.AddAssetScreen
 import com.ramadan.homecare.ui.features.assets.assetdetails.AssetDetailsScreen
 import com.ramadan.homecare.ui.features.assets.myassets.MyAssetsScreen
@@ -42,7 +43,7 @@ fun HomeCareApp(innerPadding: PaddingValues){
     val navController = rememberNavController()
     HomeCareNavGraph(
         navController = navController,
-        startDestination = MyAssetRoute,
+        startDestination = SettingsRoute,
         innerPadding = innerPadding
     )
 }

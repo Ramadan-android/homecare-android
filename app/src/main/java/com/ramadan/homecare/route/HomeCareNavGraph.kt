@@ -8,6 +8,7 @@ import com.ramadan.homecare.ui.features.assets.addasset.addAssetRoute
 import com.ramadan.homecare.ui.features.assets.assetdetails.assetDetailsRoute
 import com.ramadan.homecare.ui.features.assets.myassets.myAssetRoute
 import com.ramadan.homecare.ui.features.maintenance.addmaintenance.addMaintenanceRoute
+import com.ramadan.homecare.ui.features.maintenance.settings.settingsRoute
 
 @Composable
 fun HomeCareNavGraph(
@@ -23,6 +24,6 @@ fun HomeCareNavGraph(
         assetDetailsRoute(navController = navController)
         addAssetRoute(navController = navController)
         addMaintenanceRoute(navController = navController)
-
+        settingsRoute(navController = navController)
     }
 }

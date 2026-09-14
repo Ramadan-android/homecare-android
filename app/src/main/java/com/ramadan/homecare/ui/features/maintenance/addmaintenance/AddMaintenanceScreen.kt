@@ -86,7 +86,7 @@ fun AddMaintenanceScreen(
                 modifier = Modifier.fillMaxWidth(),
                 cardPadding = PaddingValues(0.dp),
                 contentPadding = PaddingValues(16.dp),
-                shape = 0.dp,
+                shape = RoundedCornerShape(0.dp),
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 10.dp
                 )
@@ -261,7 +261,7 @@ private fun AddMaintenanceContent(
                 modifier = Modifier.fillMaxWidth(),
                 cardPadding = PaddingValues(0.dp),
                 contentPadding = PaddingValues(vertical = 20.dp, horizontal = 16.dp),
-                shape = 12.dp,
+                shape = RoundedCornerShape(12.dp),
                 containerColor = Color(0xffEDEEEF)
 
             ) {
@@ -336,7 +336,7 @@ private fun AddMaintenancePreview(){
                 modifier = Modifier.fillMaxWidth(),
                 cardPadding = PaddingValues(0.dp),
                 contentPadding = PaddingValues(16.dp),
-                shape = 0.dp,
+                shape = RoundedCornerShape(0.dp),
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 10.dp
                 )

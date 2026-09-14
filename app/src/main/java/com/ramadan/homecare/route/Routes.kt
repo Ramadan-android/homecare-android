@@ -13,3 +13,6 @@ data class AssetDetailsRoute(val assetId: Long)
 
 @Serializable
 data class AddMaintenanceRoute(val assetId: Long)
+
+@Serializable
+data object SettingsRoute
