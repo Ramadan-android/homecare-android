@@ -1,7 +1,11 @@
 package com.ramadan.homecare.route
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.ramadan.homecare.ui.features.assets.addasset.addAssetRoute
@@ -20,6 +24,7 @@ fun HomeCareNavGraph(
     NavHost(
         navController = navController,
         startDestination = startDestination,
+        modifier = Modifier.padding(innerPadding)
     ){
         homeDashboardRoute(navController = navController)
         myAssetRoute(navController = navController)
