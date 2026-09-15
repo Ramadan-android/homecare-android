@@ -6,7 +6,7 @@ import javax.inject.Inject
 class GetMaintenanceUseCase @Inject constructor(
     private val maintenanceRecordRepository: MaintenanceRecordRepository
 ) {
-    suspend operator fun invoke(maintenanceId: Long) =
-        maintenanceRecordRepository.getMaintenanceRecordById(maintenanceId)
+    suspend operator fun invoke() =
+        maintenanceRecordRepository.getMaintenanceRecords()
 
 }

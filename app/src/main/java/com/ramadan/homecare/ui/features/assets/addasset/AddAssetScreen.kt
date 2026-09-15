@@ -145,7 +145,7 @@ private fun AddAssetContent(
     ) {
         item {
             CardWrapperItem(
-                cardPadding = PaddingValues(top = 8.dp, bottom = 12.dp)
+                cardPadding = PaddingValues(top = 8.dp, bottom = 12.dp),
             ) {
                 Text(
                     text = "Basic Information",

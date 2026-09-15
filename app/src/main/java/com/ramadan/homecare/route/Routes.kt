@@ -16,3 +16,6 @@ data class AddMaintenanceRoute(val assetId: Long)
 
 @Serializable
 data object SettingsRoute
+
+@Serializable
+data object HomeDashboardRoute

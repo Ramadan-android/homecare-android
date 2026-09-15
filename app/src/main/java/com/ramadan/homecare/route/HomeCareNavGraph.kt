@@ -7,8 +7,9 @@ import androidx.navigation.compose.NavHost
 import com.ramadan.homecare.ui.features.assets.addasset.addAssetRoute
 import com.ramadan.homecare.ui.features.assets.assetdetails.assetDetailsRoute
 import com.ramadan.homecare.ui.features.assets.myassets.myAssetRoute
+import com.ramadan.homecare.ui.features.homedashboard.homeDashboardRoute
 import com.ramadan.homecare.ui.features.maintenance.addmaintenance.addMaintenanceRoute
-import com.ramadan.homecare.ui.features.maintenance.settings.settingsRoute
+import com.ramadan.homecare.ui.features.settings.settingsRoute
 
 @Composable
 fun HomeCareNavGraph(
@@ -20,6 +21,7 @@ fun HomeCareNavGraph(
         navController = navController,
         startDestination = startDestination,
     ){
+        homeDashboardRoute(navController = navController)
         myAssetRoute(navController = navController)
         assetDetailsRoute(navController = navController)
         addAssetRoute(navController = navController)

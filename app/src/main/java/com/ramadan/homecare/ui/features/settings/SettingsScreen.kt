@@ -1,4 +1,4 @@
-package com.ramadan.homecare.ui.features.maintenance.settings
+package com.ramadan.homecare.ui.features.settings
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -33,6 +33,8 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.ramadan.homecare.ui.uicomponents.CardWrapperItem
 import com.ramadan.homecare.ui.uicomponents.TopBar
+import com.ramadan.homecare.BuildConfig
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,7 +44,7 @@ fun SettingsRouteScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    if (state.showDeleteDialog){
+    if (state.showBottomSheet){
         ModalBottomSheet(
             onDismissRequest = {viewModel.onEvent(SettingsUiEvent.ToggleShowBottomSheet)},
             containerColor = Color.White
@@ -64,7 +66,7 @@ fun SettingsRouteScreen(
     Scaffold(
         topBar = {
             TopBar(
-                title = "Add Maintenance",
+                title = "Settings",
                 leadingIcon = Icons.Default.ArrowBack,
                 onLeadingIconClicked = navigateBack,
                 containerColor = Color(0xffF8F9FA)
@@ -102,9 +104,9 @@ private fun SettingsRouteContent(
                 modifier = Modifier.padding(start = 4.dp, bottom = 8.dp)
             )
             CardWrapperItem(
-                contentPadding = PaddingValues(16.dp),
                 cardPadding = PaddingValues(0.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                contentPadding = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
 
                 SettingColumnCard(
@@ -134,32 +136,49 @@ private fun SettingsRouteContent(
             )
 
             CardWrapperItem(
-                contentPadding = PaddingValues(16.dp),
                 cardPadding = PaddingValues(0.dp),
+                contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
-                shape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)
+                shape = RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp),
 
-            ) {
-                Text(
-                    text = "App Version",
-                    style = TextStyle(
-                        fontSize = 22.sp,
-                        fontWeight = FontWeight.Medium,
-                        color = Color(0xff191C1D)
-                    ),
-                )
+                ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+
+                ) {
+                    Text(
+                        text = "App Version",
+                        style = TextStyle(
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = Color(0xff191C1D)
+                        ),
+                    )
+                    Text(
+                        text = BuildConfig.VERSION_NAME,
+                        style = TextStyle(
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.W400,
+                            color = Color(0xff3E4949)
+                        ),
+
+                    )
+
+                }
             }
             CardWrapperItem(
                 modifier = Modifier
                     .clickable(
                         onClick = { onEvent(SettingsUiEvent.ToggleShowBottomSheet) }
                     ),
-                contentPadding = PaddingValues(16.dp),
                 cardPadding = PaddingValues(0.dp),
+                contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
-                shape = RoundedCornerShape(bottomStart = 12.dp, bottomEnd = 12.dp)
+                shape = RoundedCornerShape(bottomStart = 12.dp, bottomEnd = 12.dp),
 
-            ) {
+                ) {
                 Text(
                     text = "About HomeCare",
                     style = TextStyle(
@@ -168,7 +187,7 @@ private fun SettingsRouteContent(
                         color = Color(0xff191C1D)
                     ),
 
-                )
+                    )
 
             }
         }
@@ -208,10 +227,10 @@ private fun SettingColumnCard(
             modifier = Modifier.padding(bottom = 16.dp)
         )
         CardWrapperItem(
-            containerColor = Color(0xffE1E3E4),
             cardPadding = PaddingValues(0.dp),
             contentPadding = PaddingValues(4.dp),
-            shape = RoundedCornerShape(8.dp)
+            containerColor = Color(0xffE1E3E4),
+            shape = RoundedCornerShape(8.dp),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -219,14 +238,15 @@ private fun SettingColumnCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 itemList.forEach {
-                    val textBackgroundColor = if (selectedItem == it) Color.White else Color.Transparent
+                    val textBackgroundColor =
+                        if (selectedItem == it) Color.White else Color.Transparent
                     Text(
                         text = it,
                         style = TextStyle(
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Medium,
                             lineHeight = 20.sp,
-                            color = if(it == selectedItem) Color(0xff191C1D) else Color(0xff3E4949)
+                            color = if (it == selectedItem) Color(0xff191C1D) else Color(0xff3E4949)
                         ),
                         textAlign = TextAlign.Center,
                         modifier = Modifier

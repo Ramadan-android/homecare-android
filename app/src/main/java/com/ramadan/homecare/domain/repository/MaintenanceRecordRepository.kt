@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 interface MaintenanceRecordRepository {
 
     suspend fun insertMaintenance(maintenance: MaintenanceRecord): Long
+    suspend fun getMaintenanceRecords(): List<MaintenanceRecord>
 
     fun getMaintenanceRecordsByAssetId(assetId: Long): Flow<List<MaintenanceRecord>>
 

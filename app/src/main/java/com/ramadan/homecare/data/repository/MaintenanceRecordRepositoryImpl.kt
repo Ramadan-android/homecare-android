@@ -16,6 +16,10 @@ class MaintenanceRecordRepositoryImpl @Inject constructor(
         return maintenanceRecordDao.insertMaintenance(maintenance.toEntity())
     }
 
+    override suspend fun getMaintenanceRecords(): List<MaintenanceRecord> {
+        return maintenanceRecordDao.getMaintenanceRecords().map { it.toMaintenanceRecord() }
+    }
+
     override fun getMaintenanceRecordsByAssetId(assetId: Long): Flow<List<MaintenanceRecord>> {
         return maintenanceRecordDao.getMaintenanceRecordsByAssetId(assetId)
             .map {entities ->

@@ -1,4 +1,4 @@
-package com.ramadan.homecare.ui.features.maintenance.settings
+package com.ramadan.homecare.ui.features.settings
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder

@@ -1,4 +1,4 @@
-package com.ramadan.homecare.ui.features.maintenance.settings
+package com.ramadan.homecare.ui.features.settings
 
 sealed interface SettingsUiEvent {
     data class ThemeChanged(val theme: Theme) : SettingsUiEvent

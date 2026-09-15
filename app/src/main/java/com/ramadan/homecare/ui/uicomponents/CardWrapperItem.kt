@@ -13,6 +13,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,11 +25,12 @@ fun CardWrapperItem(
     cardPadding: PaddingValues = PaddingValues(vertical = 12.dp),
     contentPadding: PaddingValues = PaddingValues(20.dp),
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
+    horizontalAlignment: Alignment.Horizontal = Alignment.Start,
     hasBorder: Boolean = false,
     containerColor: Color = Color.White,
     shape: RoundedCornerShape = RoundedCornerShape(12.dp),
     elevation: CardElevation = CardDefaults.cardElevation(),
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ){
     val borderWidth = if (hasBorder)1.dp else 0.dp
     Card(
@@ -50,7 +52,8 @@ fun CardWrapperItem(
         Column(
             modifier = Modifier
                 .padding(contentPadding),
-            verticalArrangement = verticalArrangement
+            verticalArrangement = verticalArrangement,
+            horizontalAlignment = horizontalAlignment
 
         ) {
             content()
@@ -71,7 +74,7 @@ private fun CardWrapperItemPreview(){
             shape = RoundedCornerShape(0),
             elevation = CardDefaults.cardElevation(
                 defaultElevation = 10.dp
-            )
+            ),
         ) { }
     }
 

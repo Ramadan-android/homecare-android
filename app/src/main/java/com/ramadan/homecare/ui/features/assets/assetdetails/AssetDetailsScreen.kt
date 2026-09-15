@@ -207,7 +207,7 @@ private fun AssetDetailsContent(
                 CardWrapperItem(
                     contentPadding = PaddingValues(16.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
-                    hasBorder = true
+                    hasBorder = true,
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -399,11 +399,11 @@ fun ListTile(
 ) {
     CardWrapperItem(
         modifier = modifier.fillMaxWidth(),
-        contentPadding = contentPadding,
         cardPadding = PaddingValues(vertical = 6.dp),
+        contentPadding = contentPadding,
         verticalArrangement = Arrangement.spacedBy(40.dp),
-        containerColor = containerColor,
         hasBorder = hasBorder,
+        containerColor = containerColor,
 
     ) {
         Row(

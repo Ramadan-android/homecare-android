@@ -1,4 +1,4 @@
-package com.ramadan.homecare.ui.features.maintenance.settings
+package com.ramadan.homecare.ui.features.settings
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -79,12 +79,10 @@ class SettingsViewModel @Inject constructor(
             }
 
             SettingsUiEvent.ToggleShowBottomSheet -> {
-                viewModelScope.launch {
-                    _state.update {
-                        it.copy(
-                            showDeleteDialog = !_state.value.showDeleteDialog
-                        )
-                    }
+                _state.update {
+                    it.copy(
+                        showBottomSheet = !_state.value.showBottomSheet
+                    )
                 }
             }
         }

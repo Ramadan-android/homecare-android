@@ -1,10 +1,10 @@
-package com.ramadan.homecare.ui.features.maintenance.settings
+package com.ramadan.homecare.ui.features.settings
 
 
 data class SettingsUiState(
     val theme: Theme = Theme.System,
     val language: Language = Language.English,
-    val showDeleteDialog: Boolean = false
+    val showBottomSheet: Boolean = false
 
 )
 

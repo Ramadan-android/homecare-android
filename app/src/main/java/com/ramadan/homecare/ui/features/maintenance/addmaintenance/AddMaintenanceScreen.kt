@@ -89,9 +89,9 @@ fun AddMaintenanceScreen(
                 shape = RoundedCornerShape(0.dp),
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 10.dp
-                )
+                ),
 
-            ) {
+                ) {
                 Button(
                     onClick = { viewModel.onEvent(AddMaintenanceUiEvent.SaveMaintenanceRecordClicked) },
                     modifier = Modifier.fillMaxWidth(),
@@ -103,14 +103,14 @@ fun AddMaintenanceScreen(
 
 
                 ) {
-                    if (state.isLoading){
+                    if (state.isLoading) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(18.dp),
                             color = Color.White,
                             strokeWidth = 2.dp
 
                         )
-                    }else
+                    } else
                         Icon(
                             imageVector = Icons.Outlined.Save,
                             contentDescription = "save maintenance",
@@ -261,10 +261,9 @@ private fun AddMaintenanceContent(
                 modifier = Modifier.fillMaxWidth(),
                 cardPadding = PaddingValues(0.dp),
                 contentPadding = PaddingValues(vertical = 20.dp, horizontal = 16.dp),
-                shape = RoundedCornerShape(12.dp),
-                containerColor = Color(0xffEDEEEF)
+                containerColor = Color(0xffEDEEEF),
 
-            ) {
+                ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
@@ -339,11 +338,11 @@ private fun AddMaintenancePreview(){
                 shape = RoundedCornerShape(0.dp),
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 10.dp
-                )
+                ),
 
-            ) {
+                ) {
                 Button(
-                    onClick = {  },
+                    onClick = { },
                     modifier = Modifier.fillMaxWidth(),
                     contentPadding = PaddingValues(vertical = 16.dp),
                     colors = ButtonDefaults.buttonColors(
